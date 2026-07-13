@@ -30,7 +30,7 @@ export function ParticleNetwork() {
     let pointer = { x: -1000, y: -1000 };
 
     const makeNodes = () => {
-      const density = width < 640 ? 26 : width < 1024 ? 44 : 72;
+      const density = width < 640 ? 20 : width < 1024 ? 35 : 55;
       nodes = Array.from({ length: density }, (_, index) => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -42,7 +42,7 @@ export function ParticleNetwork() {
     };
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = Math.floor(width * dpr);
@@ -56,7 +56,7 @@ export function ParticleNetwork() {
 
     const draw = (staticFrame = false) => {
       context.clearRect(0, 0, width, height);
-      const linkDistance = width < 640 ? 92 : 132;
+      const linkDistance = width < 640 ? 80 : 110;
 
       nodes.forEach((node, index) => {
         if (!staticFrame) {

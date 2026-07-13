@@ -76,8 +76,9 @@ function ProjectChart({ project }: { project: Project }) {
           viewport={{ once: true, amount: 0.4 }}
           transition={{
             duration: reduceMotion ? 0.01 : 1.15,
-            ease: [0.22, 1, 0.36, 1],
+            ease: "easeOut",
           }}
+          className="will-change-transform transform-gpu"
         />
       </svg>
     </div>
@@ -97,9 +98,9 @@ function ProjectCard({
   return (
     <motion.article
       whileHover={reduceMotion ? undefined : { y: -6 }}
-      transition={{ type: "spring", stiffness: 280, damping: 24 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className={
-        "glass-card group relative overflow-hidden rounded-3xl p-5 sm:p-6 " +
+        "glass-card group relative overflow-hidden rounded-3xl p-5 sm:p-6 transform-gpu will-change-transform " +
         (featured ? "lg:col-span-2 lg:p-8" : "")
       }
     >

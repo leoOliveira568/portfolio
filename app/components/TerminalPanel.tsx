@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const terminalTabs = [
   {
@@ -92,6 +92,11 @@ export function TerminalPanel() {
   const reduceMotion = useReducedMotion();
   const current = terminalTabs[activeTab];
 
+  // Memoize colored lines to avoid regex parsing on every re-render/animation frame
+  const coloredLines = useMemo(() => {
+    return current.lines.map((line) => colorize(line));
+  }, [current]);
+
   return (
     <motion.div
       initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 28, y: 10 }}
@@ -101,10 +106,10 @@ export function TerminalPanel() {
         delay: reduceMotion ? 0 : 0.2,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="relative mx-auto w-full max-w-[620px] lg:mx-0"
+      className="relative mx-auto w-full max-w-[620px] lg:mx-0 will-change-transform"
     >
       <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-cyan-400/[0.04] blur-3xl" />
-      <div className="terminal-shell overflow-hidden rounded-[22px] border border-cyan-200/[0.13] bg-[#060d14]/95 shadow-[0_36px_110px_-42px_rgba(34,211,238,.42)] backdrop-blur-2xl">
+      <div className="terminal-shell overflow-hidden rounded-[22px] border border-cyan-200/[0.13] bg-[#060d14]/95 shadow-[0_36px_110px_-42px_rgba(34,211,238,.42)] backdrop-blur-2xl transform-gpu">
         <div className="flex h-12 items-center justify-between border-b border-white/[0.07] px-4 sm:px-5">
           <div className="flex items-center gap-1.5" aria-hidden="true">
             <span className="size-2.5 rounded-full bg-rose-400/70" />
@@ -191,7 +196,7 @@ export function TerminalPanel() {
                     <span className="select-none pr-3 text-right text-slate-700">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span>{colorize(line)}</span>
+                    <span>{coloredLines[index]}</span>
                   </motion.span>
                 ))}
               </code>
