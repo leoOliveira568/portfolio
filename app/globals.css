@@ -130,6 +130,107 @@ body {
   }
 }
 
+/* — Project card image overlay — */
+.card-image-overlay {
+  position: relative;
+}
+
+.card-image-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(5, 7, 11, 0.95) 0%,
+    rgba(5, 7, 11, 0.6) 40%,
+    rgba(5, 7, 11, 0.15) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* — Glow utilities — */
+.glow-cyan {
+  box-shadow: 0 0 60px -20px rgba(34, 211, 238, 0.2),
+    0 0 120px -40px rgba(34, 211, 238, 0.08);
+}
+
+.glow-violet {
+  box-shadow: 0 0 60px -20px rgba(167, 139, 250, 0.2),
+    0 0 120px -40px rgba(167, 139, 250, 0.08);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 60px -20px rgba(52, 211, 153, 0.2),
+    0 0 120px -40px rgba(52, 211, 153, 0.08);
+}
+
+/* — Scan-line animation for certificates — */
+@keyframes scan-line {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.scan-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(167, 139, 250, 0.08) 40%,
+    rgba(103, 232, 249, 0.12) 50%,
+    rgba(167, 139, 250, 0.08) 60%,
+    transparent 100%
+  );
+  animation: scan-line 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* — Shimmer border animation — */
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.shimmer-border {
+  position: relative;
+}
+
+.shimmer-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    rgba(34, 211, 238, 0.2),
+    rgba(167, 139, 250, 0.2),
+    rgba(52, 211, 153, 0.2),
+    rgba(34, 211, 238, 0.2)
+  );
+  background-size: 300% 300%;
+  animation: shimmer 4s ease infinite;
+  z-index: -1;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -139,5 +240,13 @@ body {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+  }
+
+  .scan-line::after {
+    animation: none;
+  }
+
+  .shimmer-border::before {
+    animation: none;
   }
 }

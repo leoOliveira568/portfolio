@@ -16,8 +16,10 @@ export type Project = {
   learning: string;
   metrics: Array<{ value: string; label: string; note: string }>;
   stack: string[];
-  chart: number[];
+  image: string;
   flow: string[];
+  link?: string;
+  repoLink?: string;
 };
 
 export type Certificate = {
@@ -25,11 +27,48 @@ export type Certificate = {
   title: string;
   issuer: string;
   issuedAt: string;
+  status: "completed" | "in-progress";
+  tags: string[];
   credentialId?: string;
   credentialUrl?: string;
-  tags: string[];
-  status: "completed" | "in_progress";
+  image?: string;
 };
+
+export const certificates: Certificate[] = [
+  {
+    id: "ibm-data-science",
+    title: "IBM Data Science",
+    issuer: "Coursera · IBM",
+    issuedAt: "Dez 2024",
+    status: "completed",
+    tags: ["Python", "Machine Learning", "SQL", "Data Visualization", "Data Analysis"],
+    credentialId: "IX0ORVQVQQSI",
+    credentialUrl: "https://coursera.org/verify/professional-cert/IX0ORVQVQQSI",
+    image: "/certificates/ibm-data-science.jfif",
+  },
+  {
+    id: "banco-dados-sql",
+    title: "O curso completo de Banco de Dados e SQL, sem mistérios!",
+    issuer: "Udemy · Felipe Mafra",
+    issuedAt: "Jul 2026",
+    status: "completed",
+    tags: ["SQL", "Banco de Dados", "Modelagem"],
+    credentialId: "UC-0f59fdfe-be13-4ff5-95b9-48ce2caf8229",
+    credentialUrl: "https://ude.my/UC-0f59fdfe-be13-4ff5-95b9-48ce2caf8229",
+    image: "/certificates/banco-de-dados-sql.jpg",
+  },
+  {
+    id: "python3-avancado",
+    title: "Curso de Python 3 do básico ao avançado - com projetos reais",
+    issuer: "Udemy · Luiz Otávio Miranda",
+    issuedAt: "Jul 2026",
+    status: "completed",
+    tags: ["Python", "Automação", "Projetos"],
+    credentialId: "UC-19dec185-6247-4997-8793-33f93832c7c7",
+    credentialUrl: "https://ude.my/UC-19dec185-6247-4997-8793-33f93832c7c7",
+    image: "/certificates/python3-avancado.jpg",
+  },
+];
 
 export const skills: Skill[] = [
   {
@@ -78,65 +117,106 @@ export const skills: Skill[] = [
 
 export const projects: Project[] = [
   {
-    id: "orion",
+    id: "churnguard",
     index: "PROJ_01",
-    category: "DATA ENGINEERING",
-    title: "Orion Pipeline",
+    category: "DATA SCIENCE",
+    title: "ChurnGuard",
     description:
-      "Estudo de pipeline incremental para validar schemas, tratar eventos e preparar tabelas analíticas com observabilidade.",
-    status: "protótipo autoral",
+      "Modelo preditivo ponta a ponta para prever o cancelamento de clientes em telecomunicações, acompanhado de um dashboard gerencial interativo.",
+    status: "concluído",
     learning:
-      "Estruturar qualidade e rastreabilidade como parte do pipeline, não como uma etapa posterior.",
+      "A importância de ir além do modelo: traduzir as previsões em segmentação de risco acionável e construir um dashboard que as áreas de negócio possam usar diretamente.",
     metrics: [
-      { value: "ETL", label: "pipeline incremental", note: "execução local" },
-      { value: "Tests", label: "qualidade de dados", note: "schemas e regras" },
-      { value: "Logs", label: "observabilidade", note: "fluxo instrumentado" },
+      { value: "Model", label: "previsão de churn", note: "scikit-learn" },
+      { value: "UI", label: "dashboard de operação", note: "next.js" },
+      { value: "Ops", label: "monitoramento", note: "análise de drift (PSI)" },
     ],
-    stack: ["Python", "SQL", "dbt", "Airflow"],
-    chart: [18, 24, 22, 38, 34, 51, 48, 64, 71, 82],
-    flow: ["sources", "schema check", "transform", "warehouse", "BI"],
+    stack: ["Python", "scikit-learn", "Pandas", "Next.js"],
+    image: "/projects/churn.png",
+    flow: ["exploração", "modelagem", "avaliação", "segmentação", "dashboard"],
+    link: "https://churnguard-prediction.netlify.app/",
+    repoLink: "https://github.com/leoOliveira568/PredictionChurnGuard/tree/main/churnguard-customer-churn",
   },
   {
-    id: "northstar",
+    id: "commercepulse",
     index: "PROJ_02",
-    category: "ANALYTICS",
-    title: "Northstar Analytics",
+    category: "DATA ANALYTICS",
+    title: "CommercePulse",
     description:
-      "Dashboard exploratório para estudar aquisição, retenção e receita sem perder a origem e o contexto de cada dado.",
-    status: "estudo em evolução",
+      "Dashboard interativo de análise 360º de e-commerce brasileiro utilizando dados da Olist. Focado em evolução do GMV, satisfação do cliente e logística.",
+    status: "concluído",
     learning:
-      "Traduzir métricas em uma interface que permita explorar perguntas, e não apenas observar números.",
+      "Desenvolvimento de uma visão analítica consolidada a partir de dados brutos e construção de aplicações de dados escaláveis.",
     metrics: [
-      { value: "BI", label: "visão consolidada", note: "dataset de estudo" },
-      { value: "API", label: "camada de dados", note: "integração local" },
+      { value: "GMV", label: "análise financeira", note: "vendas" },
+      { value: "Logística", label: "tempo de entrega", note: "atrasos" },
+      { value: "RFM", label: "segmentação", note: "clientes" },
     ],
-    stack: ["React", "Node.js", "PostgreSQL", "BI"],
-    chart: [30, 39, 33, 47, 44, 58, 62, 59, 73, 78],
-    flow: ["events", "model", "API", "dashboard"],
+    stack: ["Python", "Streamlit", "Pandas", "Data Viz"],
+    image: "/projects/commerce.png",
+    flow: ["entendimento", "EDA", "segmentação", "dashboard"],
+    link: "https://commercepulse.streamlit.app/",
+    repoLink: "https://github.com/leoOliveira568/CommercePulse",
   },
   {
-    id: "signalwatch",
+    id: "pokeevo",
     index: "PROJ_03",
-    category: "DATA OBSERVABILITY",
-    title: "SignalWatch",
+    category: "PRODUÇÃO",
+    title: "PokéEVO",
     description:
-      "Protótipo de monitoramento de anomalias e SLAs para transformar falhas silenciosas em sinais com contexto.",
-    status: "laboratório técnico",
+      "A maior comunidade de batalhas Pokémon do Brasil. Plataforma dedicada a organizar torneios, rankings e fóruns interativos para centenas de jogadores ativos.",
+    status: "em produção",
     learning:
-      "Projetar alertas que expliquem o problema e reduzam ruído, em vez de apenas registrar que algo falhou.",
+      "Aprendizados reais ao criar e manter uma plataforma estável e gerenciar uma grande comunidade online de forma contínua.",
     metrics: [
-      { value: "Checks", label: "monitoramento", note: "rotinas automatizadas" },
-      { value: "SLA", label: "sinais e alertas", note: "ambiente controlado" },
+      { value: "Live", label: "usuários ativos", note: "comunidade" },
+      { value: "Ops", label: "torneios e eventos", note: "operação contínua" },
     ],
-    stack: ["Python", "FastAPI", "Pandas", "Docker"],
-    chart: [72, 68, 74, 70, 77, 76, 84, 82, 89, 92],
-    flow: ["metrics", "detector", "severity", "alert"],
+    stack: ["Plataforma Web", "Gestão de Comunidade", "Eventos"],
+    image: "/projects/pokeevo.png",
+    flow: ["concepção", "desenvolvimento", "deploy", "operação"],
+    link: "https://www.pokeevo.net/",
+  },
+  {
+    id: "trackflow",
+    index: "PROJ_04",
+    category: "PRODUÇÃO",
+    title: "TrackFlow",
+    description:
+      "Plataforma médica desenvolvida para auxiliar profissionais de saúde a avaliarem pacientes, otimizando o fluxo e o acompanhamento clínico.",
+    status: "em produção",
+    learning:
+      "Como projetar e sustentar sistemas críticos focados em usabilidade para o dia a dia operacional de profissionais de saúde.",
+    metrics: [
+      { value: "Clínica", label: "acompanhamento", note: "pacientes" },
+      { value: "Impacto", label: "otimização", note: "tempo médico" },
+    ],
+    stack: ["React", "TypeScript", "Vite", "UI/UX"],
+    image: "/projects/trackflow.png",
+    flow: ["requisitos", "arquitetura", "construção", "entrega"],
+    link: "https://trackflow.net.br/",
+  },
+  {
+    id: "demandwise",
+    index: "PROJ_05",
+    category: "DATA ANALYTICS",
+    title: "Demand Wise Retail",
+    description: "Plataforma focada em análise e previsão de demanda para o varejo, otimizando estoques e resultados.",
+    status: "concluído",
+    learning: "Desenvolvimento de dashboards interativos e integração de modelos analíticos para o setor varejista.",
+    metrics: [
+      { value: "Previsão", label: "acurácia de vendas", note: "modelagem" },
+      { value: "Varejo", label: "otimização", note: "estoque" },
+    ],
+    stack: ["Data Analytics", "Machine Learning", "Dashboard"],
+    image: "/projects/wind.png",
+    flow: ["entendimento", "modelagem", "dashboard", "deploy"],
+    link: "https://demandwiseretail.netlify.app/",
+    repoLink: "https://github.com/leoOliveira568/DemandWise",
   },
 ];
 
 // Adicione aqui apenas credenciais reais antes de publicá-las.
-export const certificates: Certificate[] = [];
-
 export const learningSteps = [
   { index: "01", label: "Explorar", detail: "perguntas · contexto · dados" },
   { index: "02", label: "Estudar", detail: "docs · cursos · referências" },
