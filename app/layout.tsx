@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
+const FULL_NAME = "Leonardo Felipe de Oliveira";
+const GITHUB_URL = "https://github.com/leoOliveira568";
+const LINKEDIN_URL =
+  "https://www.linkedin.com/in/leonardo-felipe-de-oliveira-b088201a7/";
+
+async function getBaseUrl(): Promise<URL> {
   const requestHeaders = await headers();
   const host =
     requestHeaders.get("x-forwarded-host") ??
@@ -13,37 +18,44 @@ export async function generateMetadata(): Promise<Metadata> {
     (host.includes("localhost") || host.startsWith("127.0.0.1")
       ? "http"
       : "https");
-  const baseUrl = new URL(protocol + "://" + host);
+  return new URL(protocol + "://" + host);
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getBaseUrl();
   const imageUrl = new URL("/og-personal.png", baseUrl).toString();
-  const title = "Leonardo — Portfólio de Dados";
+  const title = "Leonardo Felipe de Oliveira — Portfólio de Dados";
   const description =
-    "Conheça a trajetória, os projetos, certificados e aprendizados de Leonardo nas áreas de dados e desenvolvimento.";
+    "Portfólio de Leonardo Felipe de Oliveira: analista de dados e desenvolvedor web. Projetos, formação, certificados e aprendizados em dados, Python, SQL e desenvolvimento.";
 
   return {
     metadataBase: baseUrl,
     title: {
       default: title,
-      template: "%s | Leonardo",
+      template: "%s | Leonardo Felipe de Oliveira",
     },
     description,
     keywords: [
-      "Engenharia de Dados",
+      "Leonardo Felipe de Oliveira",
+      "Análise de Dados",
+      "Data Analytics",
+      "Ciência de Dados",
       "Python",
       "SQL",
+      "Machine Learning",
       "React",
-      "Node.js",
-      "Data Analytics",
+      "Next.js",
       "Portfólio",
     ],
-    authors: [{ name: "Leonardo" }],
-    creator: "Leonardo",
+    authors: [{ name: FULL_NAME }],
+    creator: FULL_NAME,
     alternates: {
       canonical: "/",
     },
     openGraph: {
       type: "website",
       locale: "pt_BR",
-      siteName: "Leonardo",
+      siteName: FULL_NAME,
       title,
       description,
       url: baseUrl,
@@ -52,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: imageUrl,
           width: 1736,
           height: 907,
-          alt: "Leonardo — portfólio de dados, desenvolvimento e projetos.",
+          alt: "Leonardo Felipe de Oliveira — portfólio de dados, desenvolvimento e projetos.",
         },
       ],
     },
@@ -69,14 +81,46 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const baseUrl = await getBaseUrl();
+
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: FULL_NAME,
+    url: baseUrl.toString(),
+    jobTitle: "Analista de Dados e Desenvolvedor Web",
+    description:
+      "Analista de dados e desenvolvedor web, estudante de Análise e Desenvolvimento de Sistemas.",
+    sameAs: [GITHUB_URL, LINKEDIN_URL],
+    knowsAbout: [
+      "Análise de Dados",
+      "Python",
+      "SQL",
+      "Machine Learning",
+      "Data Visualization",
+      "React",
+      "Next.js",
+    ],
+    alumniOf: [
+      { "@type": "CollegeOrUniversity", name: "IF Goiano" },
+      { "@type": "CollegeOrUniversity", name: "Estácio" },
+    ],
+  };
+
   return (
     <html lang="pt-BR" className="dark">
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

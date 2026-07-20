@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 const navItems = [
   { href: "#sobre", label: "Sobre" },
   { href: "#projetos", label: "Projetos" },
+  { href: "#experiencia", label: "Experiência" },
+  { href: "#formacao", label: "Formação" },
   { href: "#certificados", label: "Certificados" },
   { href: "#skills", label: "Stack" },
+  { href: "#contato", label: "Contato" },
 ];
 
 export function Header() {
@@ -63,7 +66,7 @@ export function Header() {
           </span>
         </a>
 
-        <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-0.5 xl:flex">
           {navItems.map((item) => {
             const id = item.href.slice(1);
             const isActive = active === id;
@@ -91,10 +94,10 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <a
-            href="#sobre"
-            className="hidden min-h-11 items-center rounded-xl border border-cyan-300/20 bg-cyan-300/[0.07] px-4 font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-100 transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 sm:flex"
+            href="#contato"
+            className="hidden min-h-11 items-center rounded-xl border border-cyan-300/20 bg-cyan-300/[0.07] px-4 font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-100 transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 xl:flex"
           >
-            view profile()
+            contato()
           </a>
           <button
             type="button"
@@ -102,7 +105,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
-            className="grid size-11 place-items-center rounded-xl border border-white/10 text-slate-200 transition hover:border-cyan-300/30 hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 md:hidden"
+            className="grid size-11 place-items-center rounded-xl border border-white/10 text-slate-200 transition hover:border-cyan-300/30 hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 xl:hidden"
           >
             <span className="relative h-4 w-5" aria-hidden="true">
               <span className={`absolute left-0 top-0 h-px w-5 bg-current transition-transform ${open ? "translate-y-[7px] rotate-45" : ""}`} />
@@ -122,7 +125,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.22 }}
-            className="mx-auto mt-2 grid max-w-7xl gap-1 rounded-2xl border border-white/10 bg-[#071019]/95 p-3 shadow-2xl backdrop-blur-xl md:hidden"
+            className="mx-auto mt-2 grid max-w-7xl gap-1 rounded-2xl border border-white/10 bg-[#071019]/95 p-3 shadow-2xl backdrop-blur-xl xl:hidden"
           >
             {navItems.map((item, index) => (
               <a

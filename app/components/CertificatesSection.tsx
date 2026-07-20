@@ -27,18 +27,6 @@ const trackAccentText: Record<string, string> = {
   "Cloud & Pipelines": "text-violet-300",
 };
 
-const trackProgress: Record<string, number> = {
-  "Engenharia de Dados": 65,
-  "SQL & Modelagem": 55,
-  "Cloud & Pipelines": 40,
-};
-
-const trackBarColor: Record<string, string> = {
-  "Engenharia de Dados": "from-cyan-400 to-cyan-300",
-  "SQL & Modelagem": "from-emerald-400 to-emerald-300",
-  "Cloud & Pipelines": "from-violet-400 to-violet-300",
-};
-
 /* ─────────── Image Lightbox ─────────── */
 function CertificateLightbox({
   src,
@@ -299,43 +287,21 @@ function EmptyCredentials() {
                     >
                       {trackIcons[label] ?? "◆"}
                     </span>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-slate-200">
-                          {label}
-                        </span>
-                        <span
-                          className={
-                            "font-mono text-[9px] tabular-nums " +
-                            (trackAccentText[label] ?? "text-cyan-300")
-                          }
-                        >
-                          {trackProgress[label] ?? 0}%
-                        </span>
-                      </div>
-                      <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-slate-800/80">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{
-                            width: (trackProgress[label] ?? 0) + "%",
-                          }}
-                          viewport={{ once: true }}
-                          transition={{
-                            duration: reduceMotion ? 0 : 0.9,
-                            delay: reduceMotion ? 0 : 0.3 + i * 0.1,
-                            ease: [0.22, 1, 0.36, 1],
-                          }}
-                          className={
-                            "h-full rounded-full bg-gradient-to-r shadow-[0_0_12px_currentColor] " +
-                            (trackBarColor[label] ?? "from-cyan-400 to-cyan-300")
-                          }
-                        />
-                      </div>
+                    <div className="flex flex-1 items-center justify-between gap-3">
+                      <span className="text-sm font-medium text-slate-200">
+                        {label}
+                      </span>
+                      <span
+                        className={
+                          "flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.12em] " +
+                          (trackAccentText[label] ?? "text-cyan-300")
+                        }
+                      >
+                        <span className="inline-flex size-1.5 rounded-full bg-current" />
+                        {index} · em andamento
+                      </span>
                     </div>
                   </div>
-                  <p className="mt-2 pl-8 font-mono text-[7px] uppercase tracking-[0.1em] text-slate-600">
-                    {index} · em andamento
-                  </p>
                 </motion.div>
               ))}
             </div>
@@ -368,7 +334,7 @@ export function CertificatesSection() {
         >
           <div id="certificates-heading">
             <SectionHeading
-              eyebrow="03 / LEARNING LOG"
+              eyebrow="05 / LEARNING LOG"
               title="Aprendizado em modo contínuo."
               description="Este registro reúne cursos e certificações que fazem parte da minha formação — sempre com emissor, data e credencial real quando disponível."
             />

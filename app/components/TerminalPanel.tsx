@@ -210,8 +210,8 @@ export function TerminalPanel() {
 
         <div className="grid grid-cols-3 divide-x divide-white/[0.07] border-t border-white/[0.07] bg-white/[0.015]">
           {[
-            ["03", "focus areas"],
-            ["06", "core skills"],
+            ["05", "projetos"],
+            ["04", "stack domains"],
             ["active", "learning mode"],
           ].map(([value, label]) => (
             <div key={label} className="px-3 py-3.5 text-center sm:px-4">

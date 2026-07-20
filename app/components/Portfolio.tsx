@@ -1,5 +1,8 @@
 import { AboutSection } from "./AboutSection";
 import { CertificatesSection } from "./CertificatesSection";
+import { ContactSection } from "./ContactSection";
+import { EducationSection } from "./EducationSection";
+import { ExperienceSection } from "./ExperienceSection";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { ParticleNetwork } from "./ParticleNetwork";
@@ -38,8 +41,11 @@ export function Portfolio() {
           <AboutSection />
           <SystemFlow />
           <ProjectsSection />
+          <ExperienceSection />
+          <EducationSection />
           <CertificatesSection />
           <SkillsSection />
+          <ContactSection />
         </div>
       </main>
 
@@ -73,11 +79,20 @@ export function Portfolio() {
               <a href="#projetos" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
                 projetos
               </a>
+              <a href="#experiencia" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
+                experiência
+              </a>
+              <a href="#formacao" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
+                formação
+              </a>
               <a href="#certificados" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
                 certificados
               </a>
               <a href="#skills" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
                 stack
+              </a>
+              <a href="#contato" className="transition hover:text-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
+                contato
               </a>
             </nav>
 

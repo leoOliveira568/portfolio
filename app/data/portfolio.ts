@@ -1,9 +1,10 @@
-export type Skill = {
+export type StackDomain = {
+  code: string;
   label: string;
-  short: string;
-  value: number;
-  color: "cyan" | "emerald" | "violet";
-  context: string;
+  accent: "cyan" | "emerald" | "violet";
+  summary: string;
+  core: string[];
+  supporting: string[];
 };
 
 export type Project = {
@@ -20,6 +21,28 @@ export type Project = {
   flow: string[];
   link?: string;
   repoLink?: string;
+};
+
+export type Experience = {
+  code: string;
+  role: string;
+  company: string;
+  period: string;
+  type: string;
+  status: "atual" | "concluído";
+  summary: string;
+  highlights: string[];
+  stack: string[];
+};
+
+export type Education = {
+  code: string;
+  course: string;
+  institution: string;
+  period: string;
+  status: "concluído" | "transferência" | "em andamento";
+  detail: string;
+  accent: "cyan" | "emerald" | "violet";
 };
 
 export type Certificate = {
@@ -70,48 +93,96 @@ export const certificates: Certificate[] = [
   },
 ];
 
-export const skills: Skill[] = [
+export const experiences: Experience[] = [
   {
-    label: "Python",
-    short: "PY",
-    value: 92,
-    color: "cyan",
-    context: "ETL, automações, APIs e análise",
+    code: "EXP_01",
+    role: "Desenvolvedor & Analista de Dados",
+    company: "Quadcode",
+    period: "2025 — 2026",
+    type: "Tempo integral",
+    status: "concluído",
+    summary:
+      "Atuação entre desenvolvimento de software e análise de dados, apoiando decisões de negócio com dados e mantendo soluções em produção.",
+    highlights: [
+      "Desenvolvimento e manutenção de soluções de software e rotinas de dados.",
+      "Análise de dados para apoiar decisões de negócio e gerar insights acionáveis.",
+      "Construção de relatórios, dashboards e automações para as áreas de negócio.",
+    ],
+    stack: ["Python", "SQL", "Data Analytics", "Dashboards"],
+  },
+];
+
+// Trajetória acadêmica — sempre dentro da computação, convergindo para desenvolvimento e dados.
+export const education: Education[] = [
+  {
+    code: "EDU_01",
+    course: "Ciência da Computação",
+    institution: "IF Goiano",
+    period: "Jan 2023 — Jun 2024",
+    status: "concluído",
+    detail:
+      "Base sólida em algoritmos, matemática e fundamentos de computação em instituto federal.",
+    accent: "cyan",
   },
   {
-    label: "SQL",
-    short: "SQL",
-    value: 90,
-    color: "emerald",
-    context: "Modelagem, transformação e performance",
+    code: "EDU_02",
+    course: "Tecnologia em Sistemas para Internet",
+    institution: "IF Goiano",
+    period: "Jun 2024 — Jun 2025",
+    status: "transferência",
+    detail:
+      "Aproximação da prática: desenvolvimento web e construção de sistemas para a internet.",
+    accent: "violet",
   },
   {
-    label: "Data Pipelines",
-    short: "PIPE",
-    value: 88,
-    color: "violet",
-    context: "Ingestão, orquestração e qualidade",
+    code: "EDU_03",
+    course: "Análise e Desenvolvimento de Sistemas",
+    institution: "Estácio",
+    period: "Jun 2025 — previsão Jun 2027",
+    status: "em andamento",
+    detail:
+      "Formação atual, com foco em desenvolvimento de software e análise de dados.",
+    accent: "emerald",
+  },
+];
+
+// Stack organizada pelo papel de cada ferramenta no fluxo: da coleta ao produto.
+export const stackDomains: StackDomain[] = [
+  {
+    code: "01 · DATA",
+    label: "Dados & Análise",
+    accent: "cyan",
+    summary:
+      "A base de tudo: extrair, limpar e explorar dados até encontrar a pergunta certa.",
+    core: ["Python", "SQL", "Pandas"],
+    supporting: ["NumPy", "Jupyter"],
   },
   {
-    label: "Analytics & BI",
-    short: "BI",
-    value: 86,
-    color: "cyan",
-    context: "Dashboards e narrativa analítica",
+    code: "02 · MODEL",
+    label: "Machine Learning",
+    accent: "violet",
+    summary:
+      "Modelos preditivos ponta a ponta — do baseline à avaliação e ao monitoramento.",
+    core: ["scikit-learn", "Feature Engineering"],
+    supporting: ["Model Evaluation", "Data Drift"],
   },
   {
-    label: "React",
-    short: "RE",
-    value: 84,
-    color: "emerald",
-    context: "Interfaces orientadas a dados",
+    code: "03 · VIZ",
+    label: "Visualização & BI",
+    accent: "emerald",
+    summary:
+      "Transformar resultado em dashboard e narrativa que orientam a decisão.",
+    core: ["Streamlit", "Data Viz"],
+    supporting: ["Dashboards", "Storytelling"],
   },
   {
-    label: "Node.js",
-    short: "NODE",
-    value: 78,
-    color: "violet",
-    context: "Back-end, integrações e automações",
+    code: "04 · PRODUCT",
+    label: "Desenvolvimento Web",
+    accent: "cyan",
+    summary:
+      "Interfaces e produtos de dados que chegam ao usuário final, prontos para uso.",
+    core: ["React", "Next.js", "TypeScript"],
+    supporting: ["Node.js", "Git"],
   },
 ];
 
@@ -122,14 +193,14 @@ export const projects: Project[] = [
     category: "DATA SCIENCE",
     title: "ChurnGuard",
     description:
-      "Modelo preditivo ponta a ponta para prever o cancelamento de clientes em telecomunicações, acompanhado de um dashboard gerencial interativo.",
+      "Modelo preditivo ponta a ponta para prever o cancelamento de clientes em telecomunicações. Monitora 5.174 clientes ativos, identifica 1.161 em alto risco (22,4% da base) com 74,9% de recall no holdout, acompanhado de um dashboard gerencial interativo.",
     status: "concluído",
     learning:
       "A importância de ir além do modelo: traduzir as previsões em segmentação de risco acionável e construir um dashboard que as áreas de negócio possam usar diretamente.",
     metrics: [
-      { value: "Model", label: "previsão de churn", note: "scikit-learn" },
-      { value: "UI", label: "dashboard de operação", note: "next.js" },
-      { value: "Ops", label: "monitoramento", note: "análise de drift (PSI)" },
+      { value: "74,9%", label: "recall no holdout", note: "churners capturados" },
+      { value: "1.161", label: "clientes em alto risco", note: "22,4% da base ativa" },
+      { value: "R$ 87 mil", label: "exposição mensal", note: "grupo de alto risco" },
     ],
     stack: ["Python", "scikit-learn", "Pandas", "Next.js"],
     image: "/projects/churn.png",
@@ -148,9 +219,8 @@ export const projects: Project[] = [
     learning:
       "Desenvolvimento de uma visão analítica consolidada a partir de dados brutos e construção de aplicações de dados escaláveis.",
     metrics: [
-      { value: "GMV", label: "análise financeira", note: "vendas" },
-      { value: "Logística", label: "tempo de entrega", note: "atrasos" },
-      { value: "RFM", label: "segmentação", note: "clientes" },
+      { value: "R$ 15,8 mi", label: "GMV analisado", note: "produtos + frete" },
+      { value: "98,7 mil", label: "pedidos processados", note: "base Olist" },
     ],
     stack: ["Python", "Streamlit", "Pandas", "Data Viz"],
     image: "/projects/commerce.png",
@@ -164,13 +234,13 @@ export const projects: Project[] = [
     category: "PRODUÇÃO",
     title: "PokéEVO",
     description:
-      "A maior comunidade de batalhas Pokémon do Brasil. Plataforma dedicada a organizar torneios, rankings e fóruns interativos para centenas de jogadores ativos.",
+      "A maior comunidade brasileira de batalhas Pokémon, com mais de 1.000 usuários. Plataforma dedicada a organizar torneios, rankings e fóruns interativos para jogadores ativos.",
     status: "em produção",
     learning:
       "Aprendizados reais ao criar e manter uma plataforma estável e gerenciar uma grande comunidade online de forma contínua.",
     metrics: [
-      { value: "Live", label: "usuários ativos", note: "comunidade" },
-      { value: "Ops", label: "torneios e eventos", note: "operação contínua" },
+      { value: "1.000+", label: "usuários ativos", note: "comunidade" },
+      { value: "Live", label: "torneios e rankings", note: "operação contínua" },
     ],
     stack: ["Plataforma Web", "Gestão de Comunidade", "Eventos"],
     image: "/projects/pokeevo.png",
@@ -183,13 +253,13 @@ export const projects: Project[] = [
     category: "PRODUÇÃO",
     title: "TrackFlow",
     description:
-      "Plataforma médica desenvolvida para auxiliar profissionais de saúde a avaliarem pacientes, otimizando o fluxo e o acompanhamento clínico.",
+      "Plataforma de monitoramento médico com mais de 100 usuários, desenvolvida para auxiliar profissionais de saúde a avaliarem pacientes e otimizarem o acompanhamento clínico.",
     status: "em produção",
     learning:
       "Como projetar e sustentar sistemas críticos focados em usabilidade para o dia a dia operacional de profissionais de saúde.",
     metrics: [
-      { value: "Clínica", label: "acompanhamento", note: "pacientes" },
-      { value: "Impacto", label: "otimização", note: "tempo médico" },
+      { value: "100+", label: "usuários ativos", note: "profissionais de saúde" },
+      { value: "Live", label: "monitoramento clínico", note: "em produção" },
     ],
     stack: ["React", "TypeScript", "Vite", "UI/UX"],
     image: "/projects/trackflow.png",
@@ -201,12 +271,12 @@ export const projects: Project[] = [
     index: "PROJ_05",
     category: "DATA ANALYTICS",
     title: "Demand Wise Retail",
-    description: "Plataforma focada em análise e previsão de demanda para o varejo, otimizando estoques e resultados.",
+    description: "Sistema de previsão de demanda para o varejo: 500 séries loja×produto previstas em horizonte de 90 dias, traduzidas em prioridades de estoque e reposição.",
     status: "concluído",
-    learning: "Desenvolvimento de dashboards interativos e integração de modelos analíticos para o setor varejista.",
+    learning: "Desenvolvimento de dashboards interativos e integração de modelos analíticos validados como produção para o setor varejista.",
     metrics: [
-      { value: "Previsão", label: "acurácia de vendas", note: "modelagem" },
-      { value: "Varejo", label: "otimização", note: "estoque" },
+      { value: "23,2%", label: "ganho sobre baseline", note: "redução no MAE" },
+      { value: "913 mil", label: "vendas modeladas", note: "5 anos de histórico" },
     ],
     stack: ["Data Analytics", "Machine Learning", "Dashboard"],
     image: "/projects/wind.png",

@@ -79,7 +79,7 @@ export function Hero() {
           <motion.div
             variants={reveal}
             transition={{ duration: 0.55 }}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
+            className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
           >
             <a
               href="#sobre"
@@ -104,6 +104,24 @@ export function Hero() {
               >
                 ↗
               </span>
+            </a>
+            <a
+              href="/cv-leonardo-felipe-de-oliveira.pdf"
+              download
+              className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-xl border border-white/[0.08] px-5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400 transition hover:border-cyan-300/25 hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070b]"
+            >
+              <svg
+                className="size-4 text-cyan-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                aria-hidden="true"
+              >
+                <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
+                <path d="M5 21h14" />
+              </svg>
+              Baixar CV
             </a>
           </motion.div>
 

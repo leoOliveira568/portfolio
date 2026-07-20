@@ -1,215 +1,100 @@
 "use client";
 
-import {
-  animate,
-  motion,
-  useInView,
-  useReducedMotion,
-} from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { skills, type Skill } from "../data/portfolio";
+import { motion, useReducedMotion } from "framer-motion";
+import { stackDomains, type StackDomain } from "../data/portfolio";
 import { SectionHeading } from "./SectionHeading";
 
-const colorMap = {
+const accentMap = {
   cyan: {
-    text: "text-cyan-200",
     dot: "bg-cyan-300",
-    bar: "from-cyan-400 to-cyan-200",
+    code: "text-cyan-300",
+    line: "from-cyan-400/80 to-cyan-300/40",
+    coreTag: "border-cyan-300/25 bg-cyan-300/[0.07] text-cyan-100",
+    glow: "group-hover:border-cyan-300/25",
   },
   emerald: {
-    text: "text-emerald-200",
     dot: "bg-emerald-300",
-    bar: "from-emerald-400 to-emerald-200",
+    code: "text-emerald-300",
+    line: "from-emerald-400/80 to-emerald-300/40",
+    coreTag: "border-emerald-300/25 bg-emerald-300/[0.07] text-emerald-100",
+    glow: "group-hover:border-emerald-300/25",
   },
   violet: {
-    text: "text-violet-200",
     dot: "bg-violet-300",
-    bar: "from-violet-400 to-violet-200",
+    code: "text-violet-300",
+    line: "from-violet-400/80 to-violet-300/40",
+    coreTag: "border-violet-300/25 bg-violet-300/[0.07] text-violet-100",
+    glow: "group-hover:border-violet-300/25",
   },
 };
 
-function getPoint(index: number, value: number, radius = 130) {
-  const angle = -Math.PI / 2 + index * ((Math.PI * 2) / skills.length);
-  const scaledRadius = radius * value;
-  return {
-    x: 210 + Math.cos(angle) * scaledRadius,
-    y: 210 + Math.sin(angle) * scaledRadius,
-  };
-}
-
-function pointsFor(values: number[], radius = 130) {
-  return values
-    .map((value, index) => {
-      const point = getPoint(index, value, radius);
-      return point.x.toFixed(1) + "," + point.y.toFixed(1);
-    })
-    .join(" ");
-}
-
-function SkillBar({ skill, index }: { skill: Skill; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.65 });
-  const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(0);
-  const colors = colorMap[skill.color];
-
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, skill.value, {
-      duration: reduceMotion ? 0 : 1,
-      delay: reduceMotion ? 0 : index * 0.06,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (value) => setDisplay(Math.round(value)),
-    });
-    return () => controls.stop();
-  }, [inView, index, reduceMotion, skill.value]);
+function DomainCard({ domain }: { domain: StackDomain }) {
+  const accent = accentMap[domain.accent];
 
   return (
     <div
-      ref={ref}
-      className="group rounded-xl border border-transparent px-3 py-3 transition-colors hover:border-white/[0.07] hover:bg-white/[0.025]"
+      className={
+        "group relative h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-slate-950/35 p-5 transition-colors sm:p-6 " +
+        accent.glow
+      }
     >
-      <div className="mb-2.5 flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className={"size-1.5 rounded-full " + colors.dot} />
-            <span className="font-mono text-[10px] uppercase tracking-[0.13em] text-slate-200 sm:text-[11px]">
-              {skill.label}
-            </span>
-          </div>
-          <p className="mt-1.5 pl-3.5 text-xs leading-5 text-slate-600 transition-colors group-hover:text-slate-400">
-            {skill.context}
-          </p>
-        </div>
-        <span className={"font-mono text-sm tabular-nums " + colors.text}>
-          {display}%
+      {/* accent line */}
+      <div
+        aria-hidden="true"
+        className={
+          "absolute inset-x-0 top-0 h-px bg-gradient-to-r " + accent.line
+        }
+      />
+
+      <div className="flex items-center gap-2">
+        <span className={"size-1.5 rounded-full " + accent.dot} />
+        <span
+          className={
+            "font-mono text-[9px] uppercase tracking-[0.18em] " + accent.code
+          }
+        >
+          {domain.code}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-slate-800/80">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: inView ? skill.value + "%" : 0 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.95,
-            delay: reduceMotion ? 0 : index * 0.06,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className={
-            "h-full rounded-full bg-gradient-to-r shadow-[0_0_12px_currentColor] " +
-            colors.bar
-          }
-        />
-      </div>
-    </div>
-  );
-}
 
-function RadarChart() {
-  const reduceMotion = useReducedMotion();
-  const values = skills.map((skill) => skill.value / 100);
-  const labelPoints = skills.map((_, index) => getPoint(index, 1, 172));
+      <h3 className="mt-3 text-lg font-medium tracking-[-0.02em] text-slate-100">
+        {domain.label}
+      </h3>
+      <p className="mt-2 text-[13px] leading-6 text-slate-400">
+        {domain.summary}
+      </p>
 
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[430px]">
-      <div className="absolute inset-[16%] rounded-full bg-cyan-400/[0.04] blur-3xl" />
-      <svg
-        viewBox="0 0 420 420"
-        role="img"
-        aria-labelledby="radar-title radar-description"
-        className="relative h-full w-full overflow-visible"
-      >
-        <title id="radar-title">Radar de ênfase técnica</title>
-        <desc id="radar-description">
-          Visualização de Python, SQL, Data Pipelines, Analytics e BI, React e
-          Node.js. Os valores também estão disponíveis como barras ao lado.
-        </desc>
-
-        {[0.25, 0.5, 0.75, 1].map((ring) => (
-          <polygon
-            key={ring}
-            points={pointsFor(skills.map(() => ring))}
-            fill={ring === 1 ? "rgba(15,23,42,.18)" : "none"}
-            stroke="rgba(148,163,184,.13)"
-            strokeWidth="1"
-          />
-        ))}
-
-        {skills.map((skill, index) => {
-          const edge = getPoint(index, 1);
-          return (
-            <line
-              key={skill.label}
-              x1="210"
-              y1="210"
-              x2={edge.x}
-              y2={edge.y}
-              stroke="rgba(148,163,184,.11)"
-              strokeWidth="1"
-            />
-          );
-        })}
-
-        <motion.polygon
-          points={pointsFor(values)}
-          fill="rgba(34,211,238,.11)"
-          stroke="rgba(103,232,249,.82)"
-          strokeWidth="1.5"
-          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.08 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.45 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.9,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ transformOrigin: "210px 210px" }}
-        />
-
-        {skills.map((skill, index) => {
-          const point = getPoint(index, skill.value / 100);
-          const colors = ["#67e8f9", "#6ee7b7", "#c4b5fd"];
-          return (
-            <motion.circle
-              key={skill.label}
-              cx={point.x}
-              cy={point.y}
-              r="4"
-              fill={colors[index % colors.length]}
-              stroke="#071019"
-              strokeWidth="2"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: reduceMotion ? 0 : 0.45 + index * 0.07 }}
-            />
-          );
-        })}
-
-        {skills.map((skill, index) => {
-          const point = labelPoints[index];
-          const anchor =
-            point.x < 185 ? "end" : point.x > 235 ? "start" : "middle";
-          return (
-            <text
-              key={skill.short}
-              x={point.x}
-              y={point.y}
-              textAnchor={anchor}
-              dominantBaseline="middle"
-              fill="rgba(203,213,225,.78)"
-              fontSize="10"
-              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-              letterSpacing="1"
-            >
-              {skill.short}
-            </text>
-          );
-        })}
-      </svg>
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-600">
-          core
+      <div className="mt-5 border-t border-white/[0.06] pt-4">
+        <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-600">
+          principais
         </p>
-        <p className="mt-1 text-xs font-medium text-slate-300">DATA × PRODUCT</p>
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
+          {domain.core.map((tool) => (
+            <span
+              key={tool}
+              className={
+                "rounded-lg border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] " +
+                accent.coreTag
+              }
+            >
+              {tool}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
+          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-700">
+            apoio
+          </span>
+          {domain.supporting.map((tool) => (
+            <span
+              key={tool}
+              className="rounded-lg border border-white/[0.06] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-slate-500"
+            >
+              {tool}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -236,67 +121,66 @@ export function SkillsSection() {
         >
           <div id="skills-heading">
             <SectionHeading
-              eyebrow="04 / TECH STACK"
-              title="Tecnologias que fazem parte da minha jornada."
-              description="Um retrato visual das ferramentas que mais aparecem nos meus estudos e projetos, com ênfase prática em dados e desenvolvimento."
+              eyebrow="06 / TECH STACK"
+              title="A stack por trás de cada etapa do dado."
+              description="Em vez de porcentagens, organizo as ferramentas pelo papel que cumprem — da coleta do dado bruto ao produto final que chega ao usuário."
             />
           </div>
         </motion.div>
 
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
-          <motion.div
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.7 }}
-            className="glass-card rounded-3xl p-5 sm:p-8"
-          >
-            <div className="mb-2 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em] text-slate-600">
-              <span>skill topology</span>
-              <span className="text-cyan-300">live map</span>
-            </div>
-            <RadarChart />
-          </motion.div>
+        <motion.div
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.7 }}
+          className="glass-card mt-14 rounded-3xl p-4 sm:p-6 lg:p-8"
+        >
+          <div className="mb-6 flex items-center justify-between border-b border-white/[0.07] px-1 pb-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">
+              stack.manifest
+            </span>
+            <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.12em] text-cyan-300">
+              data <span className="text-slate-600">→</span> product
+            </span>
+          </div>
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             variants={{
               hidden: {},
               visible: {
-                transition: { staggerChildren: reduceMotion ? 0 : 0.06 },
+                transition: { staggerChildren: reduceMotion ? 0 : 0.1 },
               },
             }}
-            className="glass-card rounded-3xl p-3 sm:p-5"
+            className="grid gap-4 sm:grid-cols-2"
           >
-            <div className="mb-2 flex items-center justify-between px-3 py-2">
-              <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-600">
-                proficiency.load()
-              </p>
-              <p className="font-mono text-[8px] uppercase tracking-[0.14em] text-slate-700">
-                frequency × depth
-              </p>
-            </div>
-            <div className="grid gap-1">
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={skill.label}
-                  variants={{
-                    hidden: { opacity: 0, x: reduceMotion ? 0 : 12 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                >
-                  <SkillBar skill={skill} index={index} />
-                </motion.div>
-              ))}
-            </div>
-            <p className="mx-3 mt-4 border-t border-white/[0.06] pt-4 font-mono text-[8px] leading-5 uppercase tracking-[0.11em] text-slate-600">
-              * Ênfase atual baseada em frequência de uso e profundidade
-              prática — não representa certificação.
-            </p>
+            {stackDomains.map((domain) => (
+              <motion.div
+                key={domain.code}
+                variants={{
+                  hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: reduceMotion ? 0.01 : 0.55,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+              >
+                <DomainCard domain={domain} />
+              </motion.div>
+            ))}
           </motion.div>
-        </div>
+
+          <p className="mt-6 border-t border-white/[0.06] px-1 pt-4 font-mono text-[8px] leading-5 uppercase tracking-[0.11em] text-slate-600">
+            * Ferramentas presentes nos meus estudos e projetos reais, agrupadas
+            por área de aplicação.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
